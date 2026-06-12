@@ -3,311 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Polla '26 - Tablero Mundialista</title>
-    <!-- Tailwind CSS para el diseño -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Polla Mundialista 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0d9488 100%);
-        }
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar-brand { font-weight: bold; font-size: 1.6rem; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .table-ranking th { background-color: #1a508b; color: white; }
+        .table-ranking tbody tr:nth-child(1) { background-color: #fff3cd; font-weight: bold; }
+        .table-ranking tbody tr:nth-child(2) { background-color: #e2e3e5; }
+        .table-ranking tbody tr:nth-child(3) { background-color: #f8d7da; }
+        .nav-tabs .nav-link.active { background-color: #1a508b; color: white; border-color: #1a508b; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
+<body>
 
-    <!-- ENCABEZADO -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-white text-blue-900 p-2.5 rounded-full shadow-inner">
-                    <i class="fa-solid fa-trophy text-2xl text-amber-500"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-black tracking-wider uppercase">La Polla '26</h1>
-                    <p class="text-xs text-teal-100 font-medium">Mundial USA / MEX / CAN</p>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">🏆 POLLA FAMILIAR 2026</span>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <ul class="nav nav-tabs mb-4" id="pollatabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="ranking-tab" data-bs-toggle="tab" data-bs-target="#ranking-pane" type="button" role="tab">Tabla de Posiciones</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="resultados-tab" data-bs-toggle="tab" data-bs-target="#resultados-pane" type="button" role="tab">Resultados Reales</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="pollatabsContent">
+            <!-- PESTAÑA RANKING -->
+            <div class="tab-pane fade show active" id="ranking-pane" role="tabpanel">
+                <div class="card p-4">
+                    <h3 class="card-title mb-4">Ranking de la Familia</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-ranking align-middle text-center">
+                            <thead>
+                                <tr>
+                                    <th>Puesto</th>
+                                    <th class="text-start">Nombre</th>
+                                    <th>Pts Partidos</th>
+                                    <th>Pts Goleadores</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-ranking-body"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm text-center md:text-right">
-                <span class="text-xs block uppercase tracking-wider text-teal-200 font-bold">Estado del Torneo</span>
-                <span id="matches-summary" class="text-sm font-bold">Cargando partidos...</span>
+
+            <!-- PESTAÑA RESULTADOS REALES -->
+            <div class="tab-pane fade" id="resultados-pane" role="tabpanel">
+                <div class="card p-4 mb-4">
+                    <h4 class="mb-3">Goles del Torneo (Actualización Oficial)</h4>
+                    <div id="partidos-list" class="row g-3 mb-4"></div>
+                </div>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- CONTENEDOR PRINCIPAL -->
-    <main class="container mx-auto px-4 py-8">
-        
-        <!-- PESTAÑAS DE NAVEGACIÓN -->
-        <div class="flex border-b border-gray-200 mb-6 bg-white rounded-t-xl shadow-sm overflow-x-auto">
-            <button onclick="switchTab('posiciones')" id="tab-posiciones" class="flex-1 md:flex-none px-6 py-4 font-bold text-sm text-blue-600 border-b-2 border-blue-600 flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-ranking-star"></i> Posiciones
-            </button>
-            <button onclick="switchTab('partidos')" id="tab-partidos" class="flex-1 md:flex-none px-6 py-4 font-bold text-sm text-gray-500 hover:text-blue-600 flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-calendar-days"></i> Resultados Reales
-            </button>
-            <button onclick="switchTab('goleadores')" id="tab-goleadores" class="flex-1 md:flex-none px-6 py-4 font-bold text-sm text-gray-500 hover:text-blue-600 flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-shoe-prints"></i> Goleadores
-            </button>
-        </div>
-
-        <!-- SECCIÓN 1: TABLA DE POSICIONES -->
-        <section id="sec-posiciones" class="tab-content block animate-fade-in">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 gradient-bg text-white flex justify-between items-center">
-                    <h2 class="font-bold text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-list-ol"></i> Clasificación General en Tiempo Real
-                    </h2>
-                    <span class="text-xs bg-white/20 px-3 py-1 rounded-full font-semibold">33 Participantes</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 text-gray-600 text-xs uppercase font-bold border-b border-gray-200">
-                                <th class="py-4 px-6 text-center w-16">Pos</th>
-                                <th class="py-4 px-6">Participante</th>
-                                <th class="py-4 px-6 text-center">Puntos Partidos</th>
-                                <th class="py-4 px-6 text-center">Puntos Goleadores</th>
-                                <th class="py-4 px-6 text-center bg-blue-50 text-blue-900 font-black w-32">Total Puntos</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ranking-body">
-                            <!-- Inyectado dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 2: CONTROL DE RESULTADOS REALES -->
-        <section id="sec-partidos" class="tab-content hidden">
-            <div class="mb-4 bg-amber-50 border border-amber-200 p-4 rounded-xl flex gap-3 items-start text-amber-900 text-sm">
-                <i class="fa-solid fa-circle-info text-xl text-amber-600 mt-0.5"></i>
-                <div>
-                    <p class="font-bold">Modo Administrador Activo</p>
-                    <p class="text-amber-800">Cambia los marcadores aquí. La tabla de posiciones se recalculará instantáneamente para toda la familia.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="partidos-container">
-                <!-- Tarjetas de partidos inyectadas por JS -->
-            </div>
-        </section>
-
-        <!-- SECCIÓN 3: TABLA DE GOLEADORES -->
-        <section id="sec-goleadores" class="tab-content hidden">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-xl mx-auto">
-                <h2 class="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <i class="fa-solid fa-bullseye text-red-500"></i> Control de Goles Oficiales
-                </h2>
-                <p class="text-sm text-gray-500 mb-6">Suma los goles totales acumulados por los jugadores estrella. Cada acierto dará los puntos correspondientes según el reglamento.</p>
-                
-                <div class="space-y-4" id="goleadores-container">
-                    <!-- Inputs de goleadores inyectados por JS -->
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- SCRIPTS CON LA LÓGICA DE LA POLLA -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // DATA BASELINE EXTRAÍDA DIRECTAMENTE DESDE TU EXCEL
-        const participantesData = [
-            { nombre: "NORMA HERRERA", pronosticos: [[3,1], [2,1]], goleadores: ["Harry Kane", "Kylian Mbappe", "Erling Haaland", "Luis Diaz", "Raphinha"] },
-            { nombre: "JUAN PABLO G.", pronosticos: [[2,0], [0,1]], goleadores: ["Kylian Mbappe", "Lamine Yamal", "Vinicius Jr", "Lionel Messi", "Kody Gakpo"] },
-            { nombre: "SHANA ARGUELLES", pronosticos: [[2,0], [1,2]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Lamine Yamal", "Lautaro Martinez", "Robert Lewandowski"] },
-            { nombre: "VALE TORRES Y ADRI", pronosticos: [[2,1], [1,0]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Cristiano Ronaldo", "Phil Foden"] },
-            { nombre: "LAU BOTTIA", pronosticos: [[2,1], [3,1]], goleadores: ["Kylian Mbappe", "Vinicius Jr", "Erling Haaland", "Lamine Yamal", "Jude Bellingham"] },
-            { nombre: "MAFE HERRERA", pronosticos: [[2,0], [2,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "TITI HERRERA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Lamine Yamal", "Vinicius Jr", "Julian Alvarez"] },
-            { nombre: "JEREMY", pronosticos: [[2,0], [2,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "JUANDI CORDOBA", pronosticos: [[1,2], [1,0]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Vinicius Jr", "Lamine Yamal", "Harry Kane"] },
-            { nombre: "ANA CORDOBA", pronosticos: [[2,1], [1,0]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Lamine Yamal", "Cristiano Ronaldo"] },
-            { nombre: "CARLOS GONZALEZ", pronosticos: [[1,0], [0,0]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Vinicius Jr", "Harry Kane", "Lamine Yamal"] },
-            { nombre: "SANTI ACOSTA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Vinicius Jr", "Harry Kane", "Lamine Yamal"] },
-            { nombre: "ALE TORRES", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Darwin Nuñez", "Lamine Yamal"] },
-            { nombre: "NANA GONZALEZ", pronosticos: [[2,0], [1,0]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "SANTIAGO ACEVEDO", pronosticos: [[3,2], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "CAMILO BARRENECHE", pronosticos: [[2,1], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "CAMILO BOTTIA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Lamine Yamal", "Vinicius Jr", "Darwin Nuñez"] },
-            { nombre: "LAURA VITA", pronosticos: [[1,0], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "MIGUEL A CASTRO", pronosticos: [[2,0], [0,1]], goleadores: ["Kylian Mbappe", "Vinicius Jr", "Harry Kane", "Erling Haaland", "Lautaro Martinez"] },
-            { nombre: "COLA ECHAVARRIA", pronosticos: [[2,3], [3,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Erling Haaland", "Lamine Yamal"] },
-            { nombre: "RICKY CORDOBA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "GAIDA", pronosticos: [[1,1], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "PIPE BOTTIA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "ALEJO GONZALEZ", pronosticos: [[3,1], [1,2]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "JUANK GONZALEZ", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "MARIBEL CORDOBA", pronosticos: [[2,0], [1,2]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Erling Haaland", "Lamine Yamal"] },
-            { nombre: "FELIPE BOTTIA", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "PATTY CORDOBA Y JAIME", pronosticos: [[2,0], [0,2]], goleadores: ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "JUANPA CAMELO", pronosticos: [[2,0], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "NICO CAMELO", pronosticos: [[2,1], [1,1]], goleadores: ["Kylian Mbappe", "Erling Haaland", "Harry Kane", "Vinicius Jr", "Lamine Yamal"] },
-            { nombre: "SANTI BOTTIA", pronosticos: [[2,1], [0,0]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Erling Haaland", "Lamine Yamal"] },
-            { nombre: "VALE DIAZ", pronosticos: [[2,0], [1,0]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Erling Haaland", "Lamine Yamal"] },
-            { nombre: "CHRISTIAN LEMUS", pronosticos: [[2,0], [2,1]], goleadores: ["Kylian Mbappe", "Harry Kane", "Vinicius Jr", "Lamine Yamal", "Robert Lewandowski"] }
-        ];
-
-        // Partidos iniciales basados en lo que me dijiste
+        // CONFIGURACIÓN DE PARTIDOS REALES JUGADOS
         let partidos = [
             { id: 0, local: "México", visitante: "Sudáfrica", golesLocal: 2, golesVisitante: 0, jugado: true },
             { id: 1, local: "Corea del Sur", visitante: "Chequia", golesLocal: 2, golesVisitante: 1, jugado: true }
         ];
 
-        // Lista global única de goleadores para controlar sus goles totales en el torneo
+        // CONFIGURACIÓN DE GOLES DE LOS JUGADORES ESTRELLA
         let golesGoleadores = {
-            "Kylian Mbappe": 0, "Harry Kane": 0, "Erling Haaland": 0, "Vinicius Jr": 0,
-            "Lamine Yamal": 0, "Luis Diaz": 0, "Raphinha": 0, "Cristiano Ronaldo": 0,
-            "Phil Foden": 0, "Jude Bellingham": 0, "Julian Alvarez": 0, "Darwin Nuñez": 0,
-            "Lautaro Martinez": 0, "Robert Lewandowski": 0, "Lionel Messi": 0, "Kody Gakpo": 0
+            "Kylian Mbappe": 0, "Kylian Mbappé": 0, "Kylian Mbapee": 0, "MBAPPE": 0, "kylian mbappé": 0,
+            "Harry Kane": 0, "HENRY KANE": 0, "Kane": 0,
+            "Erling Haaland": 0, "Haaland": 0, "Halaand": 0,
+            "Vinicius Jr": 0, "Vinicius": 0, "Vinícius Júnior": 0, "Vinicius Junior": 0, "Vinicius Jr.": 0
         };
 
-        // Cambiar entre pestañas
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
-            
-            document.querySelectorAll('[id^="tab-"]').forEach(el => {
-                el.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-                el.classList.add('text-gray-500');
-            });
-            document.getElementById(`tab-${tabId}`).classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
-        }
+        // BASE DE DATOS EXACTA EXTRAÍDA DIRECTAMENTE DESDE TU EXCEL CELDA POR CELDA
+        const participantesData = [
+          { "nombre": "NORMA HERRERA", "pronosticos": [[3, 1], [2, 1]], "goleadores": ["Harry Kane", "Kylian Mbappe", "Erling Haaland", "Luis Diaz", "Raphinha"] },
+          { "nombre": "JUAN PABLO G.", "pronosticos": [[2, 0], [0, 1]], "goleadores": ["Kylian Mbappe", "Lamine Yamal", "Vinicius Jr", "Lionel Messi", "Kody Gakpo"] },
+          { "nombre": "SHANA ARGUELLES", "pronosticos": [[2, 0], [1, 2]], "goleadores": ["Kylian Mbapee", "Erling Haaland", "Julian Alvarez", "Lamine Yamal", "Lucho Diaz"] },
+          { "nombre": "VALE TORRES Y ADRI", "pronosticos": [[2, 1], [1, 0]], "goleadores": ["Erling Haaland", "Lucho Diaz", "Lamine Yamal", "Ousmane Dembélé", "Bruno Fernandez"] },
+          { "nombre": "LAU BOTTIA", "pronosticos": [[2, 1], [3, 1]], "goleadores": ["Messi", "Kane", "Mbappe", "Lautaro Martinez", "Ronaldo"] },
+          { "nombre": "MAFE HERRERA", "pronosticos": [[2, 0], [2, 1]], "goleadores": ["Haaland", "Julian Alvarez", "Mbappe", "Lamine Yamal", "Vinicius"] },
+          { "nombre": "TITI HERRERA", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["KYLIAN MBAPPE", "CRISTIANO RONALDO", "MENPHIS DEPAY", "HENRY KANE", "LIONEL MESSI"] },
+          { "nombre": "JEREMY", "pronosticos": [[2, 0], [2, 1]], "goleadores": ["Messi", "Vinicius", "Mbappe", "Harry Kane", "Haaland"] },
+          { "nombre": "JUANDI CORDOBA", "pronosticos": [[1, 2], [1, 0]], "goleadores": ["Ousmane Dembelé", "Julián Álvarez", "Mateus Cunha", "Luis Díaz", "Kylian Mbappé"] },
+          { "nombre": "ANA CORDOBA", "pronosticos": [[2, 1], [1, 0]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Suarez"] },
+          { "nombre": "CARLOS GONZALEZ", "pronosticos": [[1, 0], [0, 0]], "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Diaz"] },
+          { "nombre": "SANTI ACOSTA", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Julián Álvarez", "Lamine Yamal"] },
+          { "nombre": "ALE TORRES", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Lamine Yamal", "Julián Álvarez", "Harry Kane", "Erling Haaland"] },
+          { "nombre": "NANA GONZALEZ", "pronosticos": [[3, 2], [1, 0]], "goleadores": ["kylian mbappé", "Marcus Thuram", "Ferran Torres", "Wout Weghorst", "Lamine Yamal"] },
+          { "nombre": "SANTIAGO ACEVEDO", "pronosticos": [[2, 1], [1, 1]], "goleadores": ["Lautaro Martínez", "Mbappe", "Luis Diaz", "Harry Kane", "Haaland"] },
+          { "nombre": "CAMILO BARRENECHE", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Cristiano Ronaldo", "Erling Haaland", "Rayan Cherki", "Lamine Yamal"] },
+          { "nombre": "CAMILO BOTTIA", "pronosticos": [[1, 0], [1, 1]], "goleadores": ["Mbappe", "Harry Kane", "Memphis Depay", "Halaand", "Kai Havertz"] },
+          { "nombre": "LAURA VITA", "pronosticos": [[2, 0], [0, 1]], "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Cristiano Ronaldo", "Lamine Yamal"] },
+          { "nombre": "MIGUEL A CASTRO", "pronosticos": [[2, 3], [3, 1]], "goleadores": ["Haaland", "Mbappe", "Julián Álvarez", "Harry Kane", "Olise"] },
+          { "nombre": "COLA ECHAVARRIA", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Lautaro Martínez", "Jamal Musiala", "Vinicius Júnior"] },
+          { "nombre": "RICKY CORDOBA", "pronosticos": [[1, 1], [1, 1]], "goleadores": ["Harry Kane", "Lamine Yamal", "Mbappe", "Trossard", "Malen"] },
+          { "nombre": "GAIDA", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Erling Haaland", "Harry Kane", "Vinícius Júnior", "Julián Álvarez"] },
+          { "nombre": "PIPE BOTTIA", "pronosticos": [[3, 1], [1, 2]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Mikel Oyarzabal", "Erling Haaland", "Vinicius Jr."] },
+          { "nombre": "ALEJO GONZALEZ", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappe", "Harry Kane", "Mikel Oyarzabal", "Erling Haaland", "Lucho Diaz"] },
+          { "nombre": "JUANK GONZALEZ", "pronosticos": [[2, 0], [1, 2]], "goleadores": ["Kylian Mbappe", "Harry Kane", "Mikel Oyarzabal", "Lionel Messi", "Erling Haaland"] },
+          { "nombre": "MARIBEL CORDOBA", "pronosticos": [[2, 0], [1, 1]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Lamine Yamal", "Vinícius Júnior", "Ousmane Dembélé"] },
+          { "nombre": "FELIPE BOTTIA", "pronosticos": [[2, 0], [0, 2]], "goleadores": ["MBAPPE", "LAMINE YAMAL", "HARRY KANE", "PEDRI", "DEMBELE"] },
+          { "nombre": "PATTY CORDOBA Y JAIME", "pronosticos": [[2, 1], [1, 1]], "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Vinicius Junior"] },
+          { "nombre": "JUANPA CAMELO", "pronosticos": [[null, null], [null, null]], "goleadores": [] },
+          { "nombre": "NICO CAMELO", "pronosticos": [[2, 1], [0, 0]], "goleadores": ["Harry Kane", "Kylian Mbappé", "Lamine Yamal", "Julian Alvarez", "Vinicius Jr."] },
+          { "nombre": "SANTI BOTTIA", "pronosticos": [[2, 0], [1, 0]], "goleadores": ["Mbappe", "Julián Álvarez", "Mikel Oryazabal", "Harry Kane", "Haaland"] },
+          { "nombre": "VALE DIAZ", "pronosticos": [[2, 0], [0, 1]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Suárez (COL)"] },
+          { "nombre": "CHRISTIAN LEMUS", "pronosticos": [[null, null], [2, 1]], "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Luís Díaz", "Vinicius Junior"] }
+        ];
 
-        // LÓGICA DE CALCULO DE PUNTOS (Reglamento de la imagen)
         function calcularPuntos() {
             let ranking = participantesData.map(p => {
                 let ptsPartidos = 0;
                 let ptsGoleadores = 0;
 
-                // Calcular puntos por partidos de fase de grupos
                 partidos.forEach(partido => {
                     if (!partido.jugado) return;
-                    
                     const pPronostico = p.pronosticos[partido.id];
                     if (!pPronostico) return;
 
                     const [prLocal, prVisitante] = pPronostico;
                     
+                    if (prLocal === null || prLocal === undefined || isNaN(prLocal) || 
+                        prVisitante === null || prVisitante === undefined || isNaN(prVisitante)) {
+                        return; 
+                    }
+
                     const realResultado = partido.golesLocal > partido.golesVisitante ? 'L' : (partido.golesLocal < partido.golesVisitante ? 'V' : 'E');
                     const prResultado = prLocal > prVisitante ? 'L' : (prLocal < prVisitante ? 'V' : 'E');
 
-                    // 1. Acierto de marcador exacto = 10 puntos
                     if (partido.golesLocal === prLocal && partido.golesVisitante === prVisitante) {
                         ptsPartidos += 10;
-                    } 
-                    // 2. Acierto de tendencia (ganador o empate) = 5 puntos
-                    else if (realResultado === prResultado) {
+                    } else if (realResultado === prResultado) {
                         ptsPartidos += 5;
                     }
                 });
 
-                // Calcular puntos por goleadores (ejemplo base: 5 puntos por cada gol anotado por sus elegidos)
                 p.goleadores.forEach(g => {
-                    if (golesGoleadores[g]) {
+                    if (golesGoleadores[g] !== undefined) {
                         ptsGoleadores += golesGoleadores[g] * 5; 
                     }
                 });
 
-                return {
-                    nombre: p.nombre,
-                    ptsPartidos: ptsPartidos,
-                    ptsGoleadores: ptsGoleadores,
-                    total: ptsPartidos + ptsGoleadores
-                };
+                return { nombre: p.nombre, ptsPartidos: ptsPartidos, ptsGoleadores: ptsGoleadores, total: ptsPartidos + ptsGoleadores };
             });
 
-            // Ordenar de Mayor a Menor puntaje
             ranking.sort((a, b) => b.total - a.total);
             renderRanking(ranking);
-            renderResumen();
         }
 
         function renderRanking(ranking) {
-            const tbody = document.getElementById('ranking-body');
-            tbody.innerHTML = '';
-            
+            const tbody = document.getElementById("tabla-ranking-body");
+            tbody.innerHTML = "";
             ranking.forEach((p, idx) => {
-                let medalla = idx + 1;
-                if (idx === 0) medalla = '🥇';
-                else if (idx === 1) medalla = '🥈';
-                else if (idx === 2) medalla = '🥉';
-
-                tbody.innerHTML += `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50/80 transition">
-                        <td class="py-4 px-6 text-center font-bold text-gray-500">${medalla}</td>
-                        <td class="py-4 px-6 font-bold text-gray-900">${p.nombre}</td>
-                        <td class="py-4 px-6 text-center text-gray-600 font-medium">${p.ptsPartidos} pts</td>
-                        <td class="py-4 px-6 text-center text-gray-600 font-medium">${p.ptsGoleadores} pts</td>
-                        <td class="py-4 px-6 text-center bg-blue-50/50 text-blue-700 font-black text-base">${p.total}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function updateResultado(partidoId, campo, valor) {
-            const partido = partidos.find(p => p.id === partidoId);
-            if (valor === '') {
-                partido.jugado = false;
-            } else {
-                partido[campo] = parseInt(valor);
-                partido.jugado = true;
-            }
-            calcularPuntos();
-        }
-
-        function updateGolesGoleador(nombre, valor) {
-            golesGoleadores[nombre] = valor === '' ? 0 : parseInt(valor);
-            calcularPuntos();
-        }
-
-        function renderPartidos() {
-            const container = document.getElementById('partidos-container');
-            container.innerHTML = '';
-            partidos.forEach(p => {
-                container.innerHTML += `
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between">
-                        <div class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex justify-between">
-                            <span>Partido #${p.id + 1}</span>
-                            <span class="${p.jugado ? 'text-green-600':'text-amber-500'}">${p.jugado ? 'Finalizado':'Pendiente'}</span>
-                        </div>
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="flex-1 text-right font-bold text-sm text-gray-700 truncate">${p.local}</div>
-                            <input type="number" value="${p.golesLocal}" oninput="updateResultado(${p.id}, 'golesLocal', this.value)" class="w-12 p-2 text-center font-black bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                            <span class="text-gray-300 font-bold">-</span>
-                            <input type="number" value="${p.golesVisitante}" oninput="updateResultado(${p.id}, 'golesVisitante', this.value)" class="w-12 p-2 text-center font-black bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                            <div class="flex-1 text-left font-bold text-sm text-gray-700 truncate">${p.visitante}</div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderGoleadores() {
-            const container = document.getElementById('goleadores-container');
-            container.innerHTML = '';
-            Object.keys(golesGoleadores).sort().forEach(g => {
-                container.innerHTML += `
-                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 hover:border-gray-200 transition">
-                        <span class="font-semibold text-gray-700"><i class="fa-solid fa-user text-xs text-gray-400 mr-2"></i>${g}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs text-gray-400">Goles:</span>
-                            <input type="number" min="0" value="${golesGoleadores[g]}" oninput="updateGolesGoleador('${g}', this.value)" class="w-16 p-1.5 text-center font-bold bg-white border border-gray-200 rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    </div>
-                `;
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${idx + 1}</td><td class="text-start">${p.nombre}</td><td>${p.ptsPartidos}</td><td>${p.ptsGoleadores}</td><td><strong>${p.total}</strong></td>`;
+                tbody.appendChild(tr);
             });
         }
 
         function renderResumen() {
-            const jugados = partidos.filter(p => p.id < 2).length; // Cambiar según agregues más
-            document.getElementById('matches-summary').innerText = `${jugados} partidos procesados`;
+            const list = document.getElementById("partidos-list");
+            list.innerHTML = "";
+            partidos.forEach(p => {
+                const div = document.createElement("div");
+                div.className = "col-md-6";
+                div.innerHTML = `<div class="p-3 border rounded bg-white text-center"><strong>${p.local}</strong> ${p.golesLocal} - ${p.golesVisitante} <strong>${p.visitante}</strong><br><small class="text-muted">Partido Finalizado</small></div>`;
+                list.appendChild(div);
+            });
         }
 
-        // Inicialización de la App
-        renderPartidos();
-        renderGoleadores();
-        calcularPuntos();
+        window.onload = function() {
+            calcularPuntos();
+            renderResumen();
+        };
     </script>
 </body>
 </html>
