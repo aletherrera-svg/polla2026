@@ -1,0 +1,168 @@
+// BASE DE DATOS REAL DE PARTICIPANTES (EXTRAÍDA DIRECTAMENTE DESDE TU EXCEL CELDA POR CELDA)
+        const participantesData = [
+          {
+            "nombre": "NORMA HERRERA",
+            "pronosticos": [[3, 1], [2, 1]],
+            "goleadores": ["Harry Kane", "Kylian Mbappe", "Erling Haaland", "Luis Diaz", "Raphinha"]
+          },
+          {
+            "nombre": "JUAN PABLO G.",
+            "pronosticos": [[2, 0], [0, 1]],
+            "goleadores": ["Kylian Mbappe", "Lamine Yamal", "Vinicius Jr", "Lionel Messi", "Kody Gakpo"]
+          },
+          {
+            "nombre": "SHANA ARGUELLES",
+            "pronosticos": [[2, 0], [1, 2]],
+            "goleadores": ["Kylian Mbapee", "Erling Haaland", "Julian Alvarez", "Lamine Yamal", "Lucho Diaz"]
+          },
+          {
+            "nombre": "VALE TORRES Y ADRI",
+            "pronosticos": [[2, 1], [1, 0]],
+            "goleadores": ["Erling Haaland", "Lucho Diaz", "Lamine Yamal", "Ousmane Dembélé", "Bruno Fernandez"]
+          },
+          {
+            "nombre": "LAU BOTTIA",
+            "pronosticos": [[2, 1], [3, 1]],
+            "goleadores": ["Messi", "Kane", "Mbappe", "Lautaro Martinez", "Ronaldo"]
+          },
+          {
+            "nombre": "MAFE HERRERA",
+            "pronosticos": [[2, 0], [2, 1]],
+            "goleadores": ["Haaland", "Julian Alvarez", "Mbappe", "Lamine Yamal", "Vinicius"]
+          },
+          {
+            "nombre": "TITI HERRERA",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["KYLIAN MBAPPE", "CRISTIANO RONALDO", "MENPHIS DEPAY", "HENRY KANE", "LIONEL MESSI"]
+          },
+          {
+            "nombre": "JEREMY",
+            "pronosticos": [[2, 0], [2, 1]],
+            "goleadores": ["Messi", "Vinicius", "Mbappe", "Harry Kane", "Haaland"]
+          },
+          {
+            "nombre": "JUANDI CORDOBA",
+            "pronosticos": [[1, 2], [1, 0]],
+            "goleadores": ["Ousmane Dembelé", "Julián Álvarez", "Mateus Cunha", "Luis Díaz", "Kylian Mbappé"]
+          },
+          {
+            "nombre": "ANA CORDOBA",
+            "pronosticos": [[2, 1], [1, 0]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Suarez"]
+          },
+          {
+            "nombre": "CARLOS GONZALEZ",
+            "pronosticos": [[1, 0], [0, 0]],
+            "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Diaz"]
+          },
+          {
+            "nombre": "SANTI ACOSTA",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Julián Álvarez", "Lamine Yamal"]
+          },
+          {
+            "nombre": "ALE TORRES",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Lamine Yamal", "Julián Álvarez", "Harry Kane", "Erling Haaland"]
+          },
+          {
+            "nombre": "NANA GONZALEZ",
+            "pronosticos": [[3, 2], [1, 0]],
+            "goleadores": ["kylian mbappé", "Marcus Thuram", "Ferran Torres", "Wout Weghorst", "Lamine Yamal"]
+          },
+          {
+            "nombre": "SANTIAGO ACEVEDO",
+            "pronosticos": [[2, 1], [1, 1]],
+            "goleadores": ["Lautaro Martínez", "Mbappe", "Luis Diaz", "Harry Kane", "Haaland"]
+          },
+          {
+            "nombre": "CAMILO BARRENECHE",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Cristiano Ronaldo", "Erling Haaland", "Rayan Cherki", "Lamine Yamal"]
+          },
+          {
+            "nombre": "CAMILO BOTTIA",
+            "pronosticos": [[1, 0], [1, 1]],
+            "goleadores": ["Mbappe", "Harry Kane", "Memphis Depay", "Halaand", "Kai Havertz"]
+          },
+          {
+            "nombre": "LAURA VITA",
+            "pronosticos": [[2, 0], [0, 1]],
+            "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Cristiano Ronaldo", "Lamine Yamal"]
+          },
+          {
+            "nombre": "MIGUEL A CASTRO",
+            "pronosticos": [[2, 3], [3, 1]],
+            "goleadores": ["Haaland", "Mbappe", "Julián Álvarez", "Harry Kane", "Olise"]
+          },
+          {
+            "nombre": "COLA ECHAVARRIA",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Lautaro Martínez", "Jamal Musiala", "Vinicius Júnior"]
+          },
+          {
+            "nombre": "RICKY CORDOBA",
+            "pronosticos": [[1, 1], [1, 1]],
+            "goleadores": ["Harry Kane", "Lamine Yamal", "Mbappe", "Trossard", "Malen"]
+          },
+          {
+            "nombre": "GAIDA",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Erling Haaland", "Harry Kane", "Vinícius Júnior", "Julián Álvarez"]
+          },
+          {
+            "nombre": "PIPE BOTTIA",
+            "pronosticos": [[3, 1], [1, 2]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Mikel Oyarzabal", "Erling Haaland", "Vinicius Jr."]
+          },
+          {
+            "nombre": "ALEJO GONZALEZ",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappe", "Harry Kane", "Mikel Oyarzabal", "Erling Haaland", "Lucho Diaz"]
+          },
+          {
+            "nombre": "JUANK GONZALEZ",
+            "pronosticos": [[2, 0], [1, 2]],
+            "goleadores": ["Kylian Mbappe", "Harry Kane", "Mikel Oyarzabal", "Lionel Messi", "Erling Haaland"]
+          },
+          {
+            "nombre": "MARIBEL CORDOBA",
+            "pronosticos": [[2, 0], [1, 1]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Lamine Yamal", "Vinícius Júnior", "Ousmane Dembélé"]
+          },
+          {
+            "nombre": "FELIPE BOTTIA",
+            "pronosticos": [[2, 0], [0, 2]],
+            "goleadores": ["MBAPPE", "LAMINE YAMAL", "HARRY KANE", "PEDRI", "DEMBELE"]
+          },
+          {
+            "nombre": "PATTY CORDOBA Y JAIME",
+            "pronosticos": [[2, 1], [1, 1]],
+            "goleadores": ["Kylian Mbappe", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Vinicius Junior"]
+          },
+          {
+            "nombre": "JUANPA CAMELO",
+            "pronosticos": [[null, null], [null, null]],
+            "goleadores": []
+          },
+          {
+            "nombre": "NICO CAMELO",
+            "pronosticos": [[2, 1], [0, 0]],
+            "goleadores": ["Harry Kane", "Kylian Mbappé", "Lamine Yamal", "Julian Alvarez", "Vinicius Jr."]
+          },
+          {
+            "nombre": "SANTI BOTTIA",
+            "pronosticos": [[2, 0], [1, 0]],
+            "goleadores": ["Mbappe", "Julián Álvarez", "Mikel Oryazabal", "Harry Kane", "Haaland"]
+          },
+          {
+            "nombre": "VALE DIAZ",
+            "pronosticos": [[2, 0], [0, 1]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Lamine Yamal", "Luis Suárez (COL)"]
+          },
+          {
+            "nombre": "CHRISTIAN LEMUS",
+            "pronosticos": [[null, null], [2, 1]],
+            "goleadores": ["Kylian Mbappé", "Harry Kane", "Erling Haaland", "Luís Díaz", "Vinicius Junior"]
+          }
+        ];
